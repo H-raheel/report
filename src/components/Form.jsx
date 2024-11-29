@@ -347,7 +347,6 @@
 
 // export default ComplaintForm;
 
-
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 
@@ -435,29 +434,54 @@ const ComplaintForm = ({ selectedCategory }) => {
   return (
     <Box
       sx={{
-        maxWidth: 600,
-        margin: "0 auto",
+        maxWidth: 700,
+        margin: "auto",
         padding: 4,
-        backgroundColor: "#FFFFFF",
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        borderRadius: "8px",
+        backgroundColor: "#f8f9fa",
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+        borderRadius: "12px",
+        marginTop: "50px",
       }}
     >
-      <Typography variant="h5" component="h1" gutterBottom>
-        Submit Your Complaint
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{
+          color: "#700f1a",
+          fontWeight: "bold",
+          textAlign: "center",
+          marginBottom: "20px",
+        }}
+      >
+        Submit a Complaint
+      </Typography>
+      <Typography
+        variant="body1"
+        sx={{
+          textAlign: "center",
+          marginBottom: "20px",
+          color: "#555",
+        }}
+      >
+        Please fill out the form below to report an incident. Ensure all required fields are completed.
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Name"
+          label="Full Name"
           name="name"
           value={formData.name}
           onChange={handleChange}
           fullWidth
           margin="normal"
           required
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
+          }}
         />
         <TextField
-          label="Email"
+          label="Email Address"
           name="email"
           type="email"
           value={formData.email}
@@ -465,6 +489,10 @@ const ComplaintForm = ({ selectedCategory }) => {
           fullWidth
           margin="normal"
           required
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
+          }}
         />
         <TextField
           label="Category"
@@ -475,6 +503,10 @@ const ComplaintForm = ({ selectedCategory }) => {
           fullWidth
           margin="normal"
           required
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
+          }}
           disabled
         >
           {categories.map((category) => (
@@ -484,7 +516,7 @@ const ComplaintForm = ({ selectedCategory }) => {
           ))}
         </TextField>
         <TextField
-          label="Date"
+          label="Incident Date"
           name="date"
           type="date"
           value={formData.date}
@@ -492,12 +524,16 @@ const ComplaintForm = ({ selectedCategory }) => {
           fullWidth
           margin="normal"
           required
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
+          }}
           InputLabelProps={{
             shrink: true,
           }}
         />
         <TextField
-          label="Description"
+          label="Description of Incident"
           name="description"
           value={formData.description}
           onChange={handleChange}
@@ -506,6 +542,10 @@ const ComplaintForm = ({ selectedCategory }) => {
           multiline
           rows={4}
           required
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
+          }}
         />
         <TextField
           label="Location"
@@ -515,21 +555,64 @@ const ComplaintForm = ({ selectedCategory }) => {
           fullWidth
           margin="normal"
           required
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "8px",
+          }}
         />
-        <input
-          type="file"
-          onChange={handleFileChange}
-          accept="image/*"
-          style={{ marginTop: "16px", marginBottom: "16px", display: "block" }}
-        />
+        <Box
+          sx={{
+            textAlign: "center",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <Button
+            variant="outlined"
+            component="label"
+            sx={{
+              borderColor: "#700f1a",
+              color: "#700f1a",
+              padding: "10px 20px",
+              borderRadius: "20px",
+            }}
+          >
+            Upload Evidence (Image)
+            <input
+              type="file"
+              hidden
+              onChange={handleFileChange}
+              accept="image/*"
+            />
+          </Button>
+          {fileData.fileName && (
+            <Typography
+              variant="body2"
+              sx={{
+                marginTop: "10px",
+                color: "#555",
+              }}
+            >
+              Selected File: {fileData.fileName}
+            </Typography>
+          )}
+        </Box>
         <Button
           type="submit"
           variant="contained"
-          color="primary"
-          sx={{ marginTop: 2 }}
-          fullWidth
+          sx={{
+            backgroundColor: "#700f1a",
+            color: "#ffffff",
+            padding: "10px 20px",
+            borderRadius: "20px",
+            fontSize: "16px",
+            width: "100%",
+            ":hover": {
+              backgroundColor: "#9a1f2b",
+            },
+          }}
         >
-          Submit
+          Submit Complaint
         </Button>
       </form>
     </Box>
