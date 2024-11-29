@@ -1,6 +1,16 @@
-import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import React from "react";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ComplaintSearch from "../components/Search";
+
 
 const categories = [
   { name: "Theft", color: "#D0E6FF", imageUrl: "https://via.placeholder.com/200?text=Theft", route: "/theft" },
@@ -25,41 +35,56 @@ const HomePage = () => {
         padding: 4,
       }}
     >
-      <Typography variant="h3" component="h1" gutterBottom>
-        Welcome to the Complaint Management System
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ marginBottom: 4 }}>
-        Please select the type of complaint you wish to report:
-      </Typography>
-      <Grid container spacing={3} justifyContent="center">
-        {categories.map((category, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-            <CardActionArea onClick={() => navigate(category.route)}>
-              <Card
-                sx={{
-                  backgroundColor: category.color,
-                  color: category.textColor || "#000000",
-                  textAlign: "center",
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={category.imageUrl}
-                  alt={`${category.name} image`}
-                />
-                <CardContent>
-                  <Typography variant="h6" component="div">
-                    {category.name}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </CardActionArea>
-          </Grid>
-        ))}
-      </Grid>
+      {/* Welcome Header */}
+      <Box sx={{ marginBottom: 6, textAlign: "center" }}>
+        <Typography variant="h3" component="h1" gutterBottom>
+          Welcome to the Complaint Management System
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Your platform for efficient and transparent complaint handling.
+        </Typography>
+      </Box>
+
+      {/* Categories Section */}
+      <Box sx={{ width: "100%", marginBottom: 6 }}>
+        <Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center" }}>
+          Select Complaint Category
+        </Typography>
+        <Grid container spacing={3} justifyContent="center">
+          {categories.map((category, index) => (
+            <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+              <CardActionArea onClick={() => navigate(category.route)}>
+                <Card
+                  sx={{
+                    backgroundColor: category.color,
+                    color: category.textColor || "#000000",
+                    textAlign: "center",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={category.imageUrl}
+                    alt={`${category.name} image`}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      {category.name}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </CardActionArea>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Complaint Search Section */}
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <ComplaintSearch />
+      </Box>
     </Box>
   );
 };
