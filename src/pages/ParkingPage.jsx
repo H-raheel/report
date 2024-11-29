@@ -18,7 +18,7 @@ const ParkingPage = () => {
         Report Parking Issues
       </Typography>
       <div>
-      <ComplaintForm selectedCategory="Parking Issue" />
+      <ComplaintForm selectedCategory="Parking Issues" />
     </div>
     </Box>
   );
