@@ -5,6 +5,7 @@ import ComplaintsPage from "./pages/Complaints";
 import DamagePage from "./pages/DamagePage";
 import FoodPage from "./pages/FoodPage";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/Login";
 import ParkingPage from "./pages/ParkingPage";
 import TheftPage from "./pages/TheftPage";
 const App = () => {
@@ -17,7 +18,8 @@ const App = () => {
         <Route path="/parking" element={<ParkingPage />} />
         <Route path="/damage" element={<DamagePage />} />
         <Route path="/food" element={<FoodPage />} />
-        <Route path="/complaints" element={<ComplaintsPage />} />
+        <Route path="/admin/complaints" element={<ComplaintsPage />} />
+        <Route path="/admin/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
