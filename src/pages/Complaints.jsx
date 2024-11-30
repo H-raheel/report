@@ -1,8 +1,13 @@
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import {
   Button,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -10,15 +15,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 // Utility function to clean HTML content
 const cleanHTML = (html) => {
@@ -30,10 +30,14 @@ const cleanHTML = (html) => {
 const TablePage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
+  const [openStatusModal, setOpenStatusModal] = useState(false);
   const [currentComplaint, setCurrentComplaint] = useState(null);
   const [apiLoading, setApiLoading] = useState(false);
   const [newStatus, setNewStatus] = useState("");
+
+  // New state variables for Image Modal
+  const [openImageModal, setOpenImageModal] = useState(false);
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
 
   // Filters
   const [statusFilter, setStatusFilter] = useState("");
@@ -71,18 +75,30 @@ const TablePage = () => {
   // Handle status change request
   const handleStatusChange = (id) => {
     setCurrentComplaint(id);
-    setOpenModal(true);
+    setOpenStatusModal(true);
     setNewStatus("Resolved");
   };
 
-  // Close the modal
-  const handleCloseModal = () => {
-    setOpenModal(false);
+  // Close the status modal
+  const handleCloseStatusModal = () => {
+    setOpenStatusModal(false);
     setCurrentComplaint(null);
     setNewStatus("");
   };
 
-  
+  // Handle view picture button click
+  const handleViewPicture = (imageUrl) => {
+    setCurrentImageUrl(imageUrl);
+    console.log(imageUrl)
+
+    setOpenImageModal(true);
+  };
+
+  // Close the image modal
+  const handleCloseImageModal = () => {
+    setOpenImageModal(false);
+    setCurrentImageUrl("");
+  };
 
   // Confirm status change
   const handleConfirmStatusChange = async () => {
@@ -121,9 +137,7 @@ const TablePage = () => {
       toast.error("An error occurred.");
     } finally {
       setApiLoading(false);
-      setOpenModal(false);
-      setCurrentComplaint(null);
-      setNewStatus("");
+      handleCloseStatusModal();
     }
   };
 
@@ -163,74 +177,73 @@ const TablePage = () => {
         Manage, Filter, and Resolve Reported Incidents
       </Typography>
 
-{/* Filter Pane */}
-<div
-  style={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#f8f9fa", // Subtle light background
-    padding: "8px 15px", // Reduced padding
-    borderRadius: "8px", // Slightly smaller border radius
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)", // Subtle shadow
-    marginBottom: "15px", // Reduced margin
-  }}
->
-  {/* Filter Heading with Logo */}
-  <div style={{ display: "flex", alignItems: "center" }}>
+      {/* Filter Pane */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: "#f8f9fa", // Subtle light background
+          padding: "8px 15px", // Reduced padding
+          borderRadius: "8px", // Slightly smaller border radius
+          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)", // Subtle shadow
+          marginBottom: "15px", // Reduced margin
+        }}
+      >
+        {/* Filter Heading with Logo */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            variant="h6"
+            style={{
+              color: "#700f1a", // Consistent color
+              fontWeight: "bold",
+            }}
+          >
+            <FilterAltIcon style={{ marginRight: "5px" }} />
+            Filters
+          </Typography>
+        </div>
 
-    <Typography
-      variant="h6"
-      style={{
-        color: "#700f1a", // Consistent color
-        fontWeight: "bold",
-      }}
-    >
-        <FilterAltIcon style={{ marginRight: "5px" }} />
-      Filters
-    </Typography>
-  </div>
-
-  {/* Filter Inputs */}
-  <div style={{ display: "flex", gap: "15px" }}> {/* Reduced gap */}
-    <FormControl style={{ minWidth: "100px" }}> {/* Reduced width */}
-      <InputLabel>Status</InputLabel>
-      <Select
-        value={statusFilter}
-        onChange={(e) => setStatusFilter(e.target.value)}
-      >
-        <MenuItem value="">All</MenuItem>
-        <MenuItem value="Resolved">Resolved</MenuItem>
-        <MenuItem value="Pending">Pending</MenuItem>
-      </Select>
-    </FormControl>
-    <FormControl style={{ minWidth: "100px" }}> {/* Reduced width */}
-      <InputLabel>Category</InputLabel>
-      <Select
-        value={categoryFilter}
-        onChange={(e) => setCategoryFilter(e.target.value)}
-      >
-        <MenuItem value="">All</MenuItem>
-        <MenuItem value="Parking Issues">Parking Issues</MenuItem>
-        <MenuItem value="Bullying">Bullying</MenuItem>
-        <MenuItem value="Theft">Theft</MenuItem>
-        <MenuItem value="Food Issues">Food Issues</MenuItem>
-        <MenuItem value="Property Damage">Property Damage</MenuItem>
-      </Select>
-    </FormControl>
-    <FormControl style={{ minWidth: "100px" }}> {/* Reduced width */}
-      <InputLabel>Priority</InputLabel>
-      <Select
-        value={priorityFilter}
-        onChange={(e) => setPriorityFilter(e.target.value)}
-      >
-        <MenuItem value="">All</MenuItem>
-        <MenuItem value="High">High</MenuItem>
-        <MenuItem value="Low">Low</MenuItem>
-      </Select>
-    </FormControl>
-  </div>
-</div>
+        {/* Filter Inputs */}
+        <div style={{ display: "flex", gap: "15px" }}> {/* Reduced gap */}
+          <FormControl style={{ minWidth: "100px" }}> {/* Reduced width */}
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="Resolved">Resolved</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl style={{ minWidth: "100px" }}> {/* Reduced width */}
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="Parking Issues">Parking Issues</MenuItem>
+              <MenuItem value="Bullying">Bullying</MenuItem>
+              <MenuItem value="Theft">Theft</MenuItem>
+              <MenuItem value="Food Issues">Food Issues</MenuItem>
+              <MenuItem value="Property Damage">Property Damage</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl style={{ minWidth: "100px" }}> {/* Reduced width */}
+            <InputLabel>Priority</InputLabel>
+            <Select
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="High">High</MenuItem>
+              <MenuItem value="Low">Low</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </div>
 
       {/* Table */}
       <TableContainer
@@ -254,6 +267,7 @@ const TablePage = () => {
                 "Location",
                 "Description",
                 "Actions",
+                "View Picture", // New header
               ].map((header) => (
                 <TableCell
                   key={header}
@@ -297,23 +311,41 @@ const TablePage = () => {
                   {cleanHTML(item.Description) || "No description provided"}
                 </TableCell>
                 <TableCell style={{ textAlign: "center" }}>
-                <Button
-  variant="contained"
-  style={{
-    background:
-      item.Status === "Pending"
-      ? "linear-gradient(to right, #700f1a, #9a1f2b)" // Red gradient for Pending
-      : "linear-gradient(to right, #4caf50, #81c784)", // Green gradient for Resolved
-    color: "#ffffff",
-    borderRadius: "20px",
-    padding: "5px 15px",
-  }}
-  onClick={() => handleStatusChange(item.ID)}
-  disabled={item.Status === "Resolved"}
->
-  {item.Status === "Resolved" ? "Resolved" : "Pending"}
-</Button>
-
+                  <Button
+                    variant="contained"
+                    style={{
+                      background:
+                        item.Status === "Pending"
+                          ? "linear-gradient(to right, #700f1a, #9a1f2b)" // Red gradient for Pending
+                          : "linear-gradient(to right, #4caf50, #81c784)", // Green gradient for Resolved
+                      color: "#ffffff",
+                      borderRadius: "20px",
+                      padding: "5px 15px",
+                    }}
+                    onClick={() => handleStatusChange(item.ID)}
+                    disabled={item.Status === "Resolved"}
+                  >
+                    {item.Status === "Resolved" ? "Resolved" : "Pending"}
+                  </Button>
+                </TableCell>
+                <TableCell style={{ textAlign: "center" }}>
+                  {item.Picture ? (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleViewPicture(item.Picture)}
+                      style={{
+                        borderColor: "#700f1a",
+                        color: "#700f1a",
+                        padding: "5px 10px",
+                        borderRadius: "20px",
+                      }}
+                    >
+                      View Picture
+                    </Button>
+                  ) : (
+                    "N/A"
+                  )}
                 </TableCell>
               </TableRow>
             ))}
@@ -321,8 +353,8 @@ const TablePage = () => {
         </Table>
       </TableContainer>
 
-      {/* Confirmation Modal */}
-      <Modal open={openModal} onClose={handleCloseModal}>
+      {/* Confirmation Modal for Status Change */}
+      <Modal open={openStatusModal} onClose={handleCloseStatusModal}>
         <div
           style={{
             position: "absolute",
@@ -362,12 +394,61 @@ const TablePage = () => {
                   borderColor: "#700f1a",
                   margin: "10px",
                 }}
-                onClick={handleCloseModal}
+                onClick={handleCloseStatusModal}
               >
                 No
               </Button>
             </div>
           )}
+        </div>
+      </Modal>
+
+      {/* Image Modal */}
+      <Modal open={openImageModal} onClose={handleCloseImageModal}>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#ffffff",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
+            maxWidth: "90%",
+            maxHeight: "90%",
+            overflow: "auto",
+          }}
+        >
+          <Typography variant="h6" style={{ marginBottom: "20px", textAlign: "center" }}>
+            Complaint Picture
+          </Typography>
+          {currentImageUrl ? (
+            <img
+              src={currentImageUrl}
+              alt="Complaint"
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "10px",
+              }}
+            />
+          ) : (
+            <Typography>No image available.</Typography>
+          )}
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "#700f1a",
+                color: "#ffffff",
+                padding: "5px 15px",
+              }}
+              onClick={handleCloseImageModal}
+            >
+              Close
+            </Button>
+          </div>
         </div>
       </Modal>
     </div>
