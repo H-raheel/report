@@ -48,7 +48,7 @@ return (
           marginBottom: 2,
         }}
       >
-        Incident Reporting System
+        RePorta
       </Typography>
       <Typography
         variant="body1"

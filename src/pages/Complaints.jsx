@@ -164,7 +164,7 @@ const TablePage = () => {
           fontWeight: "bold",
         }}
       >
-        Admin Board - Incident Management
+        Admin Board - RePorta
       </Typography>
       <Typography
         variant="subtitle1"
